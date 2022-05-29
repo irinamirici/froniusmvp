@@ -1,0 +1,25 @@
+<h1 id="tableLabel">Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<p *ngIf="!systems"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="systems">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Peak Power</th>
+      <th>Energy Produced Today</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let system of systems">
+      <td>{{ system.id }}</td>
+      <td>{{ system.name }}</td>
+      <td>{{ system.peakPower }}</td>
+      <td>{{ system.energyProducedCurrentDay }}</td>
+    </tr>
+  </tbody>
+</table>
+
