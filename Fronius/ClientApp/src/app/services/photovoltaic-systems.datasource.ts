@@ -24,11 +24,11 @@ export class PhotovoltaicSystemDataSource implements DataSource<PhotovoltaicSyst
     this.loadingSubject.complete();
   }
 
-  loadPhotovoltaicSystems(filter = '', sortDirection = 'asc', pageIndex = 0, pageSize = 3) {
+  loadPhotovoltaicSystems(sortBy = '', sortDirection = 'asc', pageIndex = 0, pageSize = 3) {
 
     this.loadingSubject.next(true);
 
-    this.systemsService.findPhotovoltaicSystems(filter, sortDirection, pageIndex, pageSize)
+    this.systemsService.findPhotovoltaicSystems(sortBy, sortDirection, pageIndex, pageSize)
       .pipe(
         catchError(() => of([])),
         finalize(() => this.loadingSubject.next(false))

@@ -2,7 +2,7 @@
 
 namespace Fronius.Services {
     public interface IPhotovoltaicService {
-        Task<Paged<PhotovoltaicSystem>> GetSystems(Pager pager);
+        Task<Paged<PhotovoltaicSystem>> GetSystemsAsync(Pager pager);
 
         Task<PhotovoltaicSystemDetail> GetSystemDetailAsync(Guid systemId);
     }

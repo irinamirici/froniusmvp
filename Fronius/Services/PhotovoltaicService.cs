@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Linq.Dynamic.Core;
 
 namespace Fronius.Services {
     public class PhotovoltaicService : IPhotovoltaicService {
@@ -16,7 +17,7 @@ namespace Fronius.Services {
             IConfiguration configuration) {
             this.memoryCache = memoryCache;
             this.httpClientFactory = httpClientFactory;
-            this.cacheInSeconds = int.Parse(configuration["ApiCacheInSeconds"]);
+            cacheInSeconds = int.Parse(configuration["ApiCacheInSeconds"]);
         }
 
         public async Task<PhotovoltaicSystemDetail> GetSystemDetailAsync(Guid systemId) {
@@ -31,28 +32,20 @@ namespace Fronius.Services {
             return new PhotovoltaicSystemDetail(systemDto, systemMessages);
         }
 
-        private async Task<IReadOnlyCollection<Dtos.ServiceMessageDto>> GetServicestemMessagesAsync(Guid systemId) {
-            var httpClient = httpClientFactory.CreateClient(Constants.FroniusApiClient);
-            var httpResponseMessage = await httpClient.GetAsync($"loadservicemessages?pvId={systemId}");
+        public async Task<Paged<PhotovoltaicSystem>> GetSystemsAsync(Pager pager) {
+            var queriableDtos = (await OnGetCacheGetOrCreateAsync()).AsQueryable();
 
-            if (httpResponseMessage.IsSuccessStatusCode) {
-                using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
-                return await JsonSerializer.DeserializeAsync<List<Dtos.ServiceMessageDto>>(contentStream, GetOptions());
+            if(!string.IsNullOrWhiteSpace(pager.SortBy)) {
+                queriableDtos = queriableDtos.OrderBy(pager.SortCriteria);
             }
 
-            throw new InvalidOperationException($"Could not read service message for {systemId}");
-        }
-
-        public async Task<Paged<PhotovoltaicSystem>> GetSystems(Pager pager) {
-            var dtos = await OnGetCacheGetOrCreateAsync();
-
-            var models = dtos.Skip(pager.Skip)
+            var models = queriableDtos
+                .Skip(pager.Skip)
                 .Take(pager.PageSize)
                 .Select(x => new PhotovoltaicSystem(x))
                 .ToList();
 
-            return new Paged<PhotovoltaicSystem>(models, dtos.Count);
+            return new Paged<PhotovoltaicSystem>(models, queriableDtos.Count());
         }
 
         private async Task<IReadOnlyCollection<Dtos.PhotovoltaicSystemDetailDto>> OnGetCacheGetOrCreateAsync() {
@@ -60,22 +53,33 @@ namespace Fronius.Services {
                 PvSystemsCacheKey,
                 cacheEntry => {
                     cacheEntry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(cacheInSeconds);
-                    return GetPvSystems();
+                    return GetPvSystemsAsync();
                 });
 
         }
 
-        private async Task<IReadOnlyCollection<Dtos.PhotovoltaicSystemDetailDto>> GetPvSystems() {
+        private async Task<IReadOnlyCollection<Dtos.PhotovoltaicSystemDetailDto>> GetPvSystemsAsync() {
             var httpClient = httpClientFactory.CreateClient(Constants.FroniusApiClient);
             var httpResponseMessage = await httpClient.GetAsync("loadpvsystems");
 
-            if (httpResponseMessage.IsSuccessStatusCode) {
-                using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
-                return await JsonSerializer.DeserializeAsync<List<Dtos.PhotovoltaicSystemDetailDto>>(contentStream, GetOptions());
+            if (!httpResponseMessage.IsSuccessStatusCode) {
+                throw new InvalidOperationException("Could not read PvSystems data");
             }
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
 
-            throw new InvalidOperationException("Could not read PvSystems data");
+            return await JsonSerializer.DeserializeAsync<List<Dtos.PhotovoltaicSystemDetailDto>>(contentStream, GetOptions());
+        }
+
+        private async Task<IReadOnlyCollection<Dtos.ServiceMessageDto>> GetServicestemMessagesAsync(Guid systemId) {
+            var httpClient = httpClientFactory.CreateClient(Constants.FroniusApiClient);
+            var httpResponseMessage = await httpClient.GetAsync($"loadservicemessages?pvId={systemId}");
+
+            if (!httpResponseMessage.IsSuccessStatusCode) {
+                throw new InvalidOperationException($"Could not read service message for {systemId}");
+            }
+            using var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
+            return await JsonSerializer.DeserializeAsync<List<Dtos.ServiceMessageDto>>(contentStream, GetOptions());
         }
 
         private static JsonSerializerOptions GetOptions() {

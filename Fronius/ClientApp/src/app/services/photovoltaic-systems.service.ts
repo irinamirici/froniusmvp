@@ -11,11 +11,11 @@ export class PhotovoltaicSystemService {
     this.baseUrl = baseUrl;
   }
 
-  findPhotovoltaicSystems(filter = '', sortOrder = 'asc', pageNumber = 0, pageSize = 5): any {
+  findPhotovoltaicSystems(sortBy = '', sortOrder = 'asc', pageNumber = 0, pageSize = 5): any {
 
     return this.http.get(this.baseUrl + 'photovoltaicsystems', {
       params: new HttpParams()
-        .set('filter', filter)
+        .set('sortBy', sortBy)
         .set('sortOrder', sortOrder)
         .set('pageNumber', pageNumber.toString())
         .set('pageSize', pageSize.toString())

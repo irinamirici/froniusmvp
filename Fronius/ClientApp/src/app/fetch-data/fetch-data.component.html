@@ -4,11 +4,10 @@
   <mat-spinner></mat-spinner>
 </div>
 
-
-<mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource" matSort matSortDisableClear>
+<mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource" matSort>
 
   <ng-container matColumnDef="id">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>#</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
     <mat-cell *matCellDef="let system">{{system.id}}</mat-cell>
   </ng-container>
 
@@ -18,16 +17,16 @@
               *matCellDef="let system">{{system.name}}</mat-cell>
   </ng-container>
 
-  <ng-container matColumnDef="peakPower" mat-sort-header>
-    <mat-header-cell *matHeaderCellDef>Peak Power</mat-header-cell>
+  <ng-container matColumnDef="peakPower">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Peak Power</mat-header-cell>
     <mat-cell class="duration-cell"
-              *matCellDef="let system">{{system.peakPower}}</mat-cell>
+              *matCellDef="let system">{{system.peakPower | number : '1.2-2'}}</mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="energyProducedCurrentDay">
-    <mat-header-cell *matHeaderCellDef mat-sort-header>energyProducedCurrentDay</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Energy Produced Today</mat-header-cell>
     <mat-cell class="duration-cell"
-              *matCellDef="let system">{{system.energyProducedCurrentDay}}</mat-cell>
+              *matCellDef="let system">{{system.energyProducedCurrentDay | number : '1.2-2'}}</mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
