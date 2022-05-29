@@ -1,23 +1,46 @@
-import { Component, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { tap } from 'rxjs/operators';
+import { PhotovoltaicSystem } from '../models/photovoltaic-system';
+import { PhotovoltaicSystemDataSource } from '../services/photovoltaic-systems.datasource';
+import { PhotovoltaicSystemService } from '../services/photovoltaic-systems.service';
 
 @Component({
   selector: 'app-fetch-data',
   templateUrl: './fetch-data.component.html'
 })
-export class FetchDataComponent {
+export class FetchDataComponent implements AfterViewInit, OnInit {
   public systems: PhotovoltaicSystem[] = [];
 
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<PhotovoltaicSystem[]>(baseUrl + 'photovoltaicsystems').subscribe(result => {
-      this.systems = result;
-    }, error => console.error(error));
-  }
-}
+  dataSource!: PhotovoltaicSystemDataSource;
+  displayedColumns = ["id", "name", "peakPower", "energyProducedCurrentDay"];
 
-interface PhotovoltaicSystem {
-  id: string;
-  name: string;
-  peakPower: number;
-  energyProducedCurrentDay: number;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  constructor(private systemsService: PhotovoltaicSystemService) { }
+
+  ngOnInit() {
+    this.dataSource = new PhotovoltaicSystemDataSource(this.systemsService);
+    this.dataSource.loadPhotovoltaicSystems();
+  }
+
+  ngAfterViewInit() {
+    this.paginator.page
+      .pipe(
+        tap(() => this.loadSystemsPage())
+      )
+      .subscribe();
+  }
+
+  loadSystemsPage() {
+    this.dataSource.loadPhotovoltaicSystems(
+      '',
+      'asc',
+      this.paginator.pageIndex,
+      this.paginator.pageSize);
+  }
+
+  onRowClicked(row: PhotovoltaicSystem) {
+    console.log('Row clicked: ', row);
+  }
 }

@@ -1,25 +1,42 @@
-<h1 id="tableLabel">Weather forecast</h1>
+<h1 id="tableLabel">Photovoltaic Systems</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<div class="spinner-container" *ngIf="dataSource.loading$ | async">
+  <mat-spinner></mat-spinner>
+</div>
 
-<p *ngIf="!systems"><em>Loading...</em></p>
 
-<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="systems">
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-      <th>Peak Power</th>
-      <th>Energy Produced Today</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let system of systems">
-      <td>{{ system.id }}</td>
-      <td>{{ system.name }}</td>
-      <td>{{ system.peakPower }}</td>
-      <td>{{ system.energyProducedCurrentDay }}</td>
-    </tr>
-  </tbody>
-</table>
+<mat-table class="lessons-table mat-elevation-z8" [dataSource]="dataSource" matSort matSortDisableClear>
+
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>#</mat-header-cell>
+    <mat-cell *matCellDef="let system">{{system.id}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+    <mat-cell class="description-cell"
+              *matCellDef="let system">{{system.name}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="peakPower" mat-sort-header>
+    <mat-header-cell *matHeaderCellDef>Peak Power</mat-header-cell>
+    <mat-cell class="duration-cell"
+              *matCellDef="let system">{{system.peakPower}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="energyProducedCurrentDay">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>energyProducedCurrentDay</mat-header-cell>
+    <mat-cell class="duration-cell"
+              *matCellDef="let system">{{system.energyProducedCurrentDay}}</mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+  <mat-row *matRowDef="let row; columns: displayedColumns" (click)="onRowClicked(row)"></mat-row>
+
+</mat-table>
+
+<mat-paginator [length]="dataSource.totalCount$ | async" [pageSize]="3"
+               [pageSizeOptions]="[3, 5, 10]"></mat-paginator>
+
 

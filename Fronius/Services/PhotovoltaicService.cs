@@ -44,14 +44,15 @@ namespace Fronius.Services {
             throw new InvalidOperationException($"Could not read service message for {systemId}");
         }
 
-        public async Task<IReadOnlyCollection<PhotovoltaicSystem>> GetSystems(int start = 0, int limit = 5) {
+        public async Task<Paged<PhotovoltaicSystem>> GetSystems(Pager pager) {
             var dtos = await OnGetCacheGetOrCreateAsync();
 
-            var models = dtos.Skip(start).Take(limit)
+            var models = dtos.Skip(pager.Skip)
+                .Take(pager.PageSize)
                 .Select(x => new PhotovoltaicSystem(x))
                 .ToList();
 
-            return models;
+            return new Paged<PhotovoltaicSystem>(models, dtos.Count);
         }
 
         private async Task<IReadOnlyCollection<Dtos.PhotovoltaicSystemDetailDto>> OnGetCacheGetOrCreateAsync() {
