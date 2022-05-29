@@ -1,7 +1,8 @@
 import { CollectionViewer, DataSource } from "@angular/cdk/collections";
 import { Observable, BehaviorSubject, of } from "rxjs";
 import { catchError, finalize } from "rxjs/operators";
-import { Paged, PhotovoltaicSystem } from "../models/photovoltaic-system";
+import { Paged } from "../models/paged";
+import { PhotovoltaicSystem } from "../models/photovoltaic-system";
 import { PhotovoltaicSystemService } from "./photovoltaic-systems.service";
 
 export class PhotovoltaicSystemDataSource implements DataSource<PhotovoltaicSystem> {

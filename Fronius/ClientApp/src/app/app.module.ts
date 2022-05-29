@@ -16,8 +16,9 @@ import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatSortModule } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
-//import { PhotovoltaicSystemDataSource } from './services/photovoltaic-systems.datasource';
 import { PhotovoltaicSystemService } from './services/photovoltaic-systems.service';
+import { SystemDetailComponent } from './system-detail/system-detail.component';
+import { PhotovoltaicSystemResolver } from './services/photovoltaic-system.resolver';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,13 @@ import { PhotovoltaicSystemService } from './services/photovoltaic-systems.servi
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
+      {
+        path: 'system/:id',
+        component: SystemDetailComponent,
+        resolve: {
+          course: PhotovoltaicSystemResolver
+        }
+      },
     ]),
     BrowserAnimationsModule,
 
@@ -46,6 +54,7 @@ import { PhotovoltaicSystemService } from './services/photovoltaic-systems.servi
   ],
   providers: [
     PhotovoltaicSystemService,
+    PhotovoltaicSystemResolver
   ],
   bootstrap: [AppComponent]
 })

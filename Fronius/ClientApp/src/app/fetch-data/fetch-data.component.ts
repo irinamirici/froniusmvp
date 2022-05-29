@@ -6,6 +6,7 @@ import { tap } from 'rxjs/operators';
 import { PhotovoltaicSystem } from '../models/photovoltaic-system';
 import { PhotovoltaicSystemDataSource } from '../services/photovoltaic-systems.datasource';
 import { PhotovoltaicSystemService } from '../services/photovoltaic-systems.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-fetch-data',
@@ -20,7 +21,7 @@ export class FetchDataComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private systemsService: PhotovoltaicSystemService) { }
+  constructor(private systemsService: PhotovoltaicSystemService, private router: Router) { }
 
   ngOnInit() {
     this.dataSource = new PhotovoltaicSystemDataSource(this.systemsService);
@@ -49,5 +50,6 @@ export class FetchDataComponent implements AfterViewInit, OnInit {
 
   onRowClicked(row: PhotovoltaicSystem) {
     console.log('Row clicked: ', row);
+    this.router.navigate(['/system', row.id]);
   }
 }

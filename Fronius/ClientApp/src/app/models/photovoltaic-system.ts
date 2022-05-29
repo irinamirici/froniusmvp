@@ -5,7 +5,20 @@ export interface PhotovoltaicSystem {
   energyProducedCurrentDay: number;
 }
 
-export interface Paged<T> {
-  totalCount: number;
-  items: T[];
+export interface PhotovoltaicSystemDetail {
+  id: string;
+  name: string;
+  peakPower: number;
+  energyProducedCurrentDay: number;
+  owner: string;
+  address: Address;
 }
+
+export interface Address {
+  latitude: number;
+  longitude: number;
+  countryCode: string;
+  countryName: string;
+  street: string;
+}
+
