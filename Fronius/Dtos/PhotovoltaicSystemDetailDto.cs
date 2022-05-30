@@ -3,7 +3,9 @@
 namespace Fronius.Dtos {
     public class PhotovoltaicSystemDetailDto {
         public Guid Id { get; set; }
+
         public string Name { get; set; } = null!;
+
         public double PeakPower { get; set; }
 
         [JsonPropertyName("energyProducedToday")]

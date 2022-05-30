@@ -24,7 +24,7 @@ namespace Fronius.Services {
             var dtos = await OnGetCacheGetOrCreateAsync();
             var systemDto = dtos.FirstOrDefault(x => x.Id == systemId);
             if (systemDto == null) {
-                throw new InvalidOperationException($"System {systemId} not found. Please refresh page.");
+                throw new InvalidOperationException($"System {systemId} not found. Please refresh systems table.");
             }
 
             var systemMessages = await GetServicestemMessagesAsync(systemId);
@@ -35,7 +35,7 @@ namespace Fronius.Services {
         public async Task<Paged<PhotovoltaicSystem>> GetSystemsAsync(Pager pager) {
             var queriableDtos = (await OnGetCacheGetOrCreateAsync()).AsQueryable();
 
-            if(!string.IsNullOrWhiteSpace(pager.SortBy)) {
+            if (!string.IsNullOrWhiteSpace(pager.SortBy)) {
                 queriableDtos = queriableDtos.OrderBy(pager.SortCriteria);
             }
 
@@ -55,7 +55,6 @@ namespace Fronius.Services {
                     cacheEntry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(cacheInSeconds);
                     return GetPvSystemsAsync();
                 });
-
         }
 
         private async Task<IReadOnlyCollection<Dtos.PhotovoltaicSystemDetailDto>> GetPvSystemsAsync() {

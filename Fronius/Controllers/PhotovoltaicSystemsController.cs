@@ -16,11 +16,10 @@ namespace Fronius.Controllers {
         }
 
         [HttpGet]
-        public async Task<Paged<PhotovoltaicSystem>> Get([FromQuery]Pager pager) {
-            logger.LogInformation("GET PhotovoltaicSystems - {pager}", pager); 
-            var systems = await photovoltaicService.GetSystemsAsync(pager);
+        public async Task<Paged<PhotovoltaicSystem>> Get([FromQuery] Pager pager) {
+            logger.LogInformation("GET PhotovoltaicSystems - {pager}", pager);
 
-            return systems;
+            return await photovoltaicService.GetSystemsAsync(pager);
         }
 
         [HttpGet("{id:guid}")]

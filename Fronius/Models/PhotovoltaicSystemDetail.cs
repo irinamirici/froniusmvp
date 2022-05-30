@@ -2,7 +2,8 @@
 
 namespace Fronius.Models {
     public class PhotovoltaicSystemDetail {
-        public PhotovoltaicSystemDetail(PhotovoltaicSystemDetailDto detail, IReadOnlyCollection<Dtos.ServiceMessageDto> messages) {
+        public PhotovoltaicSystemDetail(PhotovoltaicSystemDetailDto detail,
+            IReadOnlyCollection<ServiceMessageDto> messages) {
             Id = detail.Id;
             Name = detail.Name;
             PeakPower = detail.PeakPower;
@@ -32,11 +33,12 @@ namespace Fronius.Models {
         }
 
         public Guid Id { get; set; }
+
         public string Name { get; set; } = null!;
+
         public double PeakPower { get; set; }
 
         public double EnergyProducedCurrentDay { get; set; }
-
 
         public DateTimeOffset InstallationDate { get; set; }
 

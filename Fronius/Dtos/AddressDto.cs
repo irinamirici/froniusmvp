@@ -3,8 +3,11 @@
 namespace Fronius.Dtos {
     public class AddressDto {
         public string Street { get; set; } = null!;
+
         public string ZipCode { get; set; } = null!;
+
         public string CountryCode { get; set; } = null!;
+
         public string CountryName { get; set; } = null!;
 
         [JsonPropertyName("lat")]
