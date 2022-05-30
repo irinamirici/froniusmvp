@@ -25,5 +25,5 @@ export class SystemDetailComponent implements OnInit {
     this.systemService
       .findSystemById(this.systemId)
       .subscribe(res => this.system = res);
-    }
+  }
 }

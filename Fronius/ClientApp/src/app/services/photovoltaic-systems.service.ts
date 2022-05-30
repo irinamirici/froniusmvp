@@ -1,6 +1,5 @@
 import { Injectable, Inject } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { map } from "rxjs/operators";
 import { PhotovoltaicSystem, PhotovoltaicSystemDetail } from "../models/photovoltaic-system";
 import { Observable } from "rxjs";
 import { Paged } from "../models/paged";

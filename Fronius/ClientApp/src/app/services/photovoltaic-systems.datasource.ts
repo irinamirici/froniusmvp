@@ -33,10 +33,10 @@ export class PhotovoltaicSystemDataSource implements DataSource<PhotovoltaicSyst
       .pipe(
         catchError(() => of([])),
         finalize(() => this.loadingSubject.next(false))
-    )
+      )
       .subscribe((pagedSystems: Paged<PhotovoltaicSystem>) => {
-          this.totalCountSubject.next(pagedSystems.totalCount);
-          this.photovoltaicSystemSubject.next(pagedSystems.items);
+        this.totalCountSubject.next(pagedSystems.totalCount);
+        this.photovoltaicSystemSubject.next(pagedSystems.items);
       });
   }
 }

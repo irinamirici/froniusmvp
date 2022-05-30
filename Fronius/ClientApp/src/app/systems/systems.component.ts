@@ -9,8 +9,8 @@ import { PhotovoltaicSystemService } from '../services/photovoltaic-systems.serv
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-fetch-data',
-  templateUrl: './fetch-data.component.html'
+  selector: 'app-systems',
+  templateUrl: './systems.component.html'
 })
 export class FetchDataComponent implements AfterViewInit, OnInit {
   public systems: PhotovoltaicSystem[] = [];
