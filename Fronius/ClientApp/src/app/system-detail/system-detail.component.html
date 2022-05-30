@@ -1,4 +1,71 @@
-System details
-{{systemId}}
-
-{{system?.name}}
+<mat-card>
+  <mat-card-title>{{system?.name}}</mat-card-title>
+  <mat-card-subtitle>System details</mat-card-subtitle>
+  <mat-card-content *ngIf="system">
+    <div class="mat-table">
+      <div class="mat-row">
+        <div class="mat-cell">Energy Produced Today</div>
+        <div class="mat-cell">{{system.energyProducedCurrentDay | number : '1.2-2'}}</div>
+      </div>
+      <div class="mat-row">
+        <div class="mat-cell">Peak Power</div>
+        <div class="mat-cell">{{system.peakPower | number : '1.2-2'}}</div>
+      </div>
+      <div class="mat-row">
+        <div class="mat-cell">Installation Date</div>
+        <div class="mat-cell">{{system.installationDate | date: 'dd.MM.yyy'}}</div>
+      </div>
+      <div class="mat-row">
+        <div class="mat-cell">Name of the owner</div>
+        <div class="mat-cell">{{system.owner}}</div>
+      </div>
+      <div class="mat-row">
+        <div class="mat-cell">Condition</div>
+        <div class="mat-cell">{{Condition[system.systemCondition]}}</div>
+      </div>
+      <div class="mat-row">
+        <div class="mat-cell">
+          <mat-accordion class="example-headers-align">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Address
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="mat-table">
+                <div class="mat-row">
+                  <div class="mat-cell">Street</div>
+                  <div class="mat-cell">{{system.address.street}}</div>
+                </div>
+                <div class="mat-row">
+                  <div class="mat-cell">Zip Code</div>
+                  <div class="mat-cell">{{system.address.zipCode}}</div>
+                </div>
+                <div class="mat-row">
+                  <div class="mat-cell">Country Code</div>
+                  <div class="mat-cell">{{system.address.countryCode}}</div>
+                </div>
+                <div class="mat-row">
+                  <div class="mat-cell">Country Name</div>
+                  <div class="mat-cell">{{system.address.countryName}}</div>
+                </div>
+                <div class="mat-row">
+                  <div class="mat-cell">Latitude</div>
+                  <div class="mat-cell">{{system.address.latitude | number : '1.2-2'}}</div>
+                </div>
+                <div class="mat-row">
+                  <div class="mat-cell">Longitude</div>
+                  <div class="mat-cell">{{system.address.longitude | number : '1.2-2'}}</div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+    </div>
+   
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-button routerLink="/fetch-data">Back</button>
+  </mat-card-actions>
+</mat-card>

@@ -13,7 +13,7 @@ namespace Fronius.Models {
             SystemCondition = BuildCondition(messages);
         }
 
-        private Condition BuildCondition(IReadOnlyCollection<Dtos.ServiceMessageDto> messages) {
+        private Condition BuildCondition(IReadOnlyCollection<ServiceMessageDto> messages) {
             ServiceMessageLevel? levelWithMostMessages = messages.GroupBy(x => x.MessageLogLevel)
                 .Select(g => new { Level = g.Key, Count = g.Count() })
                 .OrderByDescending(x => x.Count)

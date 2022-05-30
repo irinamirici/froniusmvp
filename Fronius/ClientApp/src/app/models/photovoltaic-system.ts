@@ -10,8 +10,10 @@ export interface PhotovoltaicSystemDetail {
   name: string;
   peakPower: number;
   energyProducedCurrentDay: number;
+  installationDate: Date;
   owner: string;
   address: Address;
+  systemCondition: Condition;
 }
 
 export interface Address {
@@ -20,5 +22,12 @@ export interface Address {
   countryCode: string;
   countryName: string;
   street: string;
+  zipCode: string;
+}
+
+export enum Condition {
+  Good = 0,
+  Warning = 1,
+  Error = 2
 }
 

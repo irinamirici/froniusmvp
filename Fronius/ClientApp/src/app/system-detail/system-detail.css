@@ -1,0 +1,23 @@
+.mat-expansion-panel-header {
+    padding: 0;
+}
+
+.mat-table {
+  display: block;
+}
+
+.mat-row {
+  display: flex;
+  border-bottom-width: 1px;
+  border-bottom-style: groove;
+  border-block-color: lightgray;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 24px;
+}
+
+.mat-cell {
+  flex: 1;
+  overflow: hidden;
+  word-wrap: break-word;
+}
